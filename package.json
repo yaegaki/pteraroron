@@ -1,0 +1,18 @@
+{
+  "name": "pteraroron",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "yaegaki",
+  "license": "MIT",
+  "dependencies": {
+    "@types/node": "^10.12.15",
+    "puppeteer-core": "^1.11.0",
+    "typescript": "^3.2.2",
+    "@types/puppeteer-core": "^1.9.0"
+  },
+  "devDependencies": {}
+}
