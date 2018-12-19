@@ -146,9 +146,7 @@ export async function digChat(page: Page, videoSummary: VideoSummary): Promise<L
             if (seekContinuation == null) {
                 throw new Error('not found next seekContinuation');
             }
-            if (untilLastMessageMsec <= 0) {
-                throw new Error('not found next untilLastMessageMsec');
-            }
+
 
             continuation = seekContinuation;
 
@@ -158,11 +156,16 @@ export async function digChat(page: Page, videoSummary: VideoSummary): Promise<L
             await writeToFile(filepath, actions);
             info.records.push({
                 offsetMsec: offsetMsec,
-                untilLastMessageMsec: untilLastMessageMsec,
+                untilLastMessageMsec: untilLastMessageMsec > 0 ? untilLastMessageMsec : 5000,
                 filename: filename,
             });
             await writeToFile(infoPath, info);
             logBoth(`write ${filename} done.`);
+
+            // untilLastMessageMsecがない場合は最後まで到達している
+            if (untilLastMessageMsec <= 0) {
+                return;
+            }
             await sleep(1000);
         }
     }, info, infoPath, saveDir, topChatContinuation, videoSummary.id);
