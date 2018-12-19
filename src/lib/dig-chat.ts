@@ -96,7 +96,7 @@ export async function digChat(page: Page, videoSummary: VideoSummary): Promise<L
     const topChatContinuation = subMenuItems[0].continuation.reloadContinuationData.continuation;
 
     console.log(`start digging chat v=${videoSummary.id}.`);
-    await liveChatFrame.evaluate(async function (info: LiveChatLogInfo, infoPath: string, saveDir: string, continuation: string, durationMsec: number) {
+    await page.evaluate(async function (info: LiveChatLogInfo, infoPath: string, saveDir: string, continuation: string, durationMsec: number) {
         function getLink(c, msec) {
             return `https://www.youtube.com/live_chat_replay/get_live_chat_replay?continuation=${c}&playerOffsetMs=${msec}&hidden=false&pbj=1`;
         }
