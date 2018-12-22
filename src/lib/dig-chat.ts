@@ -3,6 +3,7 @@ import { Page, Frame } from 'puppeteer-core';
 import { YTResponse, LiveChatData, LiveChatReplayContinuation, PlayerSeekContinuation } from './yt';
 import { safeExposeFunction } from './pt-util';
 import { VideoSummary } from './dig-video';
+import { formatDuration } from './format-duration';
 
 /**
  * 保存したチャットの情報
@@ -64,6 +65,7 @@ export async function digChat(page: Page, videoSummary: VideoSummary): Promise<L
     safeExposeFunction(page, 'calcNextMsec', calcNextMsec);
     safeExposeFunction(page, 'writeToFile', writeToFile);
     safeExposeFunction(page, 'logHost', logHost);
+    safeExposeFunction(page, 'wrapFormatDuration', wrapFormatDuration);
 
     // 既に全部終わっている場合
     const offsetMsec = await calcNextMsec(info);
@@ -160,7 +162,8 @@ export async function digChat(page: Page, videoSummary: VideoSummary): Promise<L
                 filename: filename,
             });
             await writeToFile(infoPath, info);
-            logBoth(`write ${filename} done.`);
+            const durationStr = await wrapFormatDuration(offsetMsec);
+            logBoth(`write ${filename} done. (${durationStr})`);
 
             // untilLastMessageMsecがない場合は最後まで到達している
             if (untilLastMessageMsec <= 0) {
@@ -205,6 +208,15 @@ function getInfo(infoPath: string): LiveChatLogInfo | null {
 interface Region {
     start: number;
     end: number;
+}
+
+
+/**
+ * evalueateの中で使用してもバグらないようにする
+ * @param msec 
+ */
+async function wrapFormatDuration(msec: number): Promise<string> {
+    return formatDuration(msec);
 }
 
 /**
