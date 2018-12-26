@@ -81,17 +81,28 @@ export async function digVideo(page: Page, videoId: string): Promise<VideoInfo> 
         const contents = window['ytInitialData'].contents.twoColumnWatchNextResults.results.results.contents;
         let title = null;
         let description = null;
-        contents.forEach(c => {
-            if (c.videoPrimaryInfoRenderer !== undefined) {
-                title = c.videoPrimaryInfoRenderer.title.simpleText;
+        const getSimpleText = textObj => {
+            if (textObj.simpleText !== undefined) {
+                return textObj.simpleText;
             }
-            if (c.videoSecondaryInfoRenderer !== undefined) {
-                description = '';
-                c.videoSecondaryInfoRenderer.description.runs.forEach(r => {
+            else if (textObj.runs !== undefined) {
+                let text = ';'
+                textObj.runs.forEach(r => {
                     if (r.text !== undefined) {
-                        description += r.text;
+                        text += r.text;
                     }
                 });
+                return text;
+            }
+
+            return undefined;
+        };
+        contents.forEach(c => {
+            if (c.videoPrimaryInfoRenderer !== undefined) {
+                title = getSimpleText(c.videoPrimaryInfoRenderer.title);
+            }
+            if (c.videoSecondaryInfoRenderer !== undefined) {
+                description = getSimpleText(c.videoSecondaryInfoRenderer.description);
             }
         });
         
