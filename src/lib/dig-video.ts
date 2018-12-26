@@ -86,7 +86,7 @@ export async function digVideo(page: Page, videoId: string): Promise<VideoInfo> 
                 return textObj.simpleText;
             }
             else if (textObj.runs !== undefined) {
-                let text = ';'
+                let text = '';
                 textObj.runs.forEach(r => {
                     if (r.text !== undefined) {
                         text += r.text;
