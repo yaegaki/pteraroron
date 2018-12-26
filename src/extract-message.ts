@@ -28,6 +28,7 @@ import { parseChat } from "./lib/parse-chat";
      }
      catch (e)
      {
+         console.log(`${videoId} failed.`)
          console.error(e);
      }
  });

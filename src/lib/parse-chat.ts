@@ -23,6 +23,10 @@ export function parseChat(info: LiveChatLogInfo): EncodedLiveChatData {
     info.records.forEach(r => {
         const file = fs.readFileSync(`${info.baseDir}/${r.filename}`, 'utf-8');
         const actions: LiveChatContinuationAction[] = JSON.parse(file);
+        if (actions == null) {
+            console.log(r.filename);
+            console.log(file);
+        }
         actions.forEach(act => {
             act.replayChatItemAction.actions.forEach(cact => {
                 if (cact.addChatItemAction === undefined) return;
