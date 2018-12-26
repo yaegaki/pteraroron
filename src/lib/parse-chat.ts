@@ -34,6 +34,9 @@ export function parseChat(info: LiveChatLogInfo): EncodedLiveChatData {
                 const r = cact.addChatItemAction.item.liveChatTextMessageRenderer;
                 if (r === undefined) return;
 
+                // message.runsのようにsimpleTextではないやつは一旦無視
+                if (r.message.simpleText === undefined) return;
+
                 if (map[r.id] === undefined) {
                     map[r.id] = r;
                     records.push({
