@@ -17,6 +17,10 @@ import { parseChat } from "./lib/parse-chat";
          mkdirSync('message');
      }
      const outputPath = `message/${videoId}.json`
+     if (existsSync(outputPath)) {
+        console.log(`${videoId} skipped.`);
+        return;
+     }
 
      try
      {
