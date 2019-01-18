@@ -21,4 +21,7 @@ import * as process from 'process';
         console.error(e);
     }
     console.log('done');
+
+    // ブラウザを閉じて終了する
+    await page.browser().close();
 })();
