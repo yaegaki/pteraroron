@@ -12,13 +12,19 @@ import * as process from 'process';
         return;
     }
 
-    const videoId = process.argv[2];
+    const videoIds = process.argv.slice(2);
     const page = await createPage();
-    try {
-        await digVideo(page, videoId);
-    }
-    catch (e) {
-        console.error(e);
+    for (let i = 0; i < videoIds.length; i++) {
+        const videoId = videoIds[i];
+        console.log(`dig ${videoId}.`);
+        try {
+            await digVideo(page, videoId);
+            console.log(`${videoId} done.`);
+        }
+        catch (e) {
+            console.log(`${videoId} failed.`);
+            console.error(e);
+        }
     }
     console.log('done');
 
