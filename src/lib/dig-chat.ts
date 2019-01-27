@@ -61,11 +61,11 @@ export async function digChat(page: Page, videoSummary: VideoSummary): Promise<L
         return info;
     }
 
-    safeExposeFunction(page, 'sleep', sleep);
-    safeExposeFunction(page, 'calcNextMsec', calcNextMsec);
-    safeExposeFunction(page, 'writeToFile', writeToFile);
-    safeExposeFunction(page, 'logHost', logHost);
-    safeExposeFunction(page, 'wrapFormatDuration', wrapFormatDuration);
+    await safeExposeFunction(page, 'sleep', sleep);
+    await safeExposeFunction(page, 'calcNextMsec', calcNextMsec);
+    await safeExposeFunction(page, 'writeToFile', writeToFile);
+    await safeExposeFunction(page, 'logHost', logHost);
+    await safeExposeFunction(page, 'wrapFormatDuration', wrapFormatDuration);
 
     // 既に全部終わっている場合
     const offsetMsec = await calcNextMsec(info);
