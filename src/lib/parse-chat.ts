@@ -34,14 +34,23 @@ export function parseChat(info: LiveChatLogInfo): EncodedLiveChatData {
                 const r = cact.addChatItemAction.item.liveChatTextMessageRenderer;
                 if (r === undefined) return;
 
-                // message.runsのようにsimpleTextではないやつは一旦無視
-                if (r.message.simpleText === undefined) return;
+                let message: string;
+                if (r.message.simpleText === undefined) {
+                    if (r.message.runs === undefined) {
+                        return;
+                    }
+
+                    message = r.message.runs.map(o => o.text).join();
+                }
+                else {
+                    message = r.message.simpleText;
+                }
 
                 if (map[r.id] === undefined) {
                     map[r.id] = r;
                     records.push({
                         author: r.authorName.simpleText,
-                        message: r.message.simpleText,
+                        message: message,
                         offsetMsec: Number(act.replayChatItemAction.videoOffsetTimeMsec),
                     });
                 }

@@ -120,4 +120,5 @@ export interface LiveChatTextMessageRenderer {
 
 export interface LiveChatText {
     simpleText: string;
+    runs: {text: string}[];
 }
