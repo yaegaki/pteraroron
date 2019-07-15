@@ -46,6 +46,7 @@ export async function digVideo(page: Page, videoId: string): Promise<VideoInfo> 
 
 
     let retryCount = 0;
+    const maxRetry = 90;
     do
     {
         // 時間の取得
@@ -64,9 +65,9 @@ export async function digVideo(page: Page, videoId: string): Promise<VideoInfo> 
         }
 
         break;
-    } while (retryCount < 5);
+    } while (retryCount < maxRetry);
 
-    if (retryCount >= 5) {
+    if (retryCount >= maxRetry) {
         throw new Error('can not get durationMsec');
     }
 
